@@ -1,0 +1,112 @@
+{
+  "C:\\Users\\Dell\\Desktop\\POLIGON\\poligon-marketplace": {
+    "versionSfCore": null,
+    "versionFramework": "4.1.5",
+    "isWithinCompose": false,
+    "isCompose": false,
+    "composeOrgName": null,
+    "composeResolverProviders": {},
+    "composeServiceName": null,
+    "servicePath": "C:\\Users\\Dell\\Desktop\\POLIGON\\poligon-marketplace",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "marketplace-api",
+      "plugins": [
+        "serverless-plugin-optimize",
+        "serverless-offline",
+        "serverless-dotenv-plugin",
+        "serverless-jetpack"
+      ],
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs18.x",
+        "region": "us-east-1",
+        "stage": "dev",
+        "apiGateway": {
+          "minimumCompressionSize": 1024
+        },
+        "deploymentBucket": "serverlessdeploymentbucket2",
+        "versionFunctions": true,
+        "environment": {
+          "PG_HOST": "bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com",
+          "PG_PORT": "5432",
+          "PG_USER": "postgres",
+          "PG_PASS": "YDrJjdMJ6FASy4tYNgn6",
+          "PG_DATABASE": "poligondb",
+          "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>"
+        },
+        "deploymentBucketObject": {
+          "name": "serverlessdeploymentbucket2"
+        }
+      },
+      "functions": {
+        "main": {
+          "handler": "dist/src/lambda.handler",
+          "memorySize": 256,
+          "timeout": 30,
+          "events": [
+            {
+              "http": {
+                "method": "any",
+                "path": "/{any+}"
+              }
+            }
+          ],
+          "name": "marketplace-api-dev-main"
+        }
+      }
+    },
+    "serviceRawFile": "service: marketplace-api\r\n\r\nplugins:\r\n - serverless-plugin-optimize\r\n - serverless-offline\r\n - serverless-dotenv-plugin\r\n - serverless-jetpack\r\n\r\nprovider:\r\n name: aws\r\n runtime: nodejs18.x\r\n region: us-east-1 # Región de AWS (cambia a la que necesites)\r\n stage: dev # Entorno de despliegue (dev, prod, etc.)\r\n apiGateway:\r\n    minimumCompressionSize: 1024 # Tamaño mínimo para compresión\r\n deploymentBucket:\r\n    name: serverlessdeploymentbucket2\r\n\r\nfunctions:\r\n main: # The name of the lambda function\r\n   # The module 'handler' is exported in the file 'src/lambda'\r\n   handler: dist/src/lambda.handler\r\n   memorySize: 256 # Memoria asignada (ajusta según tus necesidades)\r\n   timeout: 30 # Tiempo de espera máximo\r\n   events:\r\n     - http:\r\n         method: any\r\n         path: /{any+}\r\n\r\n    ",
+    "command": [
+      "remove"
+    ],
+    "options": {},
+    "error": null,
+    "params": {},
+    "machineId": "0c7e092b786153cda0ce6eb654dbe53c",
+    "accessKeyV2": "<REDACTED>",
+    "accessKeyV1": "<REDACTED>",
+    "orgId": "df399ded-2ae2-4b71-a9fe-0db73e3c2b4f",
+    "orgName": "luis732",
+    "userId": "tF9lLKvRBTCsYH6NVr",
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "userName": "luis732",
+    "subscription": null,
+    "userEmail": "lfgutierrez2017@gmail.com",
+    "serviceProviderAwsCredentials": "<REDACTED>",
+    "serviceProviderAwsAccountId": "767398044749",
+    "versionSf": "4.1.5",
+    "serviceProviderAwsCfStackName": "marketplace-api-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/e3334940-302f-11ef-a1ff-1265547e7689",
+    "serviceProviderAwsCfStackCreated": "2024-06-22T00:39:30.664Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-22T00:39:37.076Z",
+    "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "MainLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:2",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "ServiceEndpoint",
+        "OutputValue": "https://jx9dodoc8k.execute-api.us-east-1.amazonaws.com/dev",
+        "Description": "URL of the service endpoint",
+        "ExportName": "sls-marketplace-api-dev-ServiceEndpoint"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverlessdeploymentbucket2",
+        "ExportName": "sls-marketplace-api-dev-ServerlessDeploymentBucketName"
+      }
+    ]
+  }
+}

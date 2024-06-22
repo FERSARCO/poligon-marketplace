@@ -1,0 +1,30 @@
+service: marketplace-api
+
+plugins:
+ - serverless-plugin-optimize
+ - serverless-offline
+ - serverless-dotenv-plugin
+ - serverless-jetpack
+
+provider:
+ name: aws
+ runtime: nodejs18.x
+ region: us-east-1 # Región de AWS (cambia a la que necesites)
+ stage: dev # Entorno de despliegue (dev, prod, etc.)
+ apiGateway:
+    minimumCompressionSize: 1024 # Tamaño mínimo para compresión
+ deploymentBucket:
+    name: serverlessdeploymentbucket2
+
+functions:
+ main: # The name of the lambda function
+   # The module 'handler' is exported in the file 'src/lambda'
+   handler: dist/src/lambda.handler
+   memorySize: 256 # Memoria asignada (ajusta según tus necesidades)
+   timeout: 30 # Tiempo de espera máximo
+   events:
+     - http:
+         method: any
+         path: /{any+}
+
+    
