@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCartitemDto } from './dto/create-cartitem.dto';
-import { UpdateCartitemDto } from './dto/update-cartitem.dto';
+import { UpdateCartitemDto } from './dto/cartitem.dto';
 
 @Injectable()
 export class CartitemService {

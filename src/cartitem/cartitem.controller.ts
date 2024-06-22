@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CartitemService } from './cartitem.service';
 import { CreateCartitemDto } from './dto/create-cartitem.dto';
-import { UpdateCartitemDto } from './dto/update-cartitem.dto';
+import { UpdateCartitemDto } from './dto/cartitem.dto';
 
 @Controller('cartitem')
 export class CartitemController {
