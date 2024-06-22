@@ -1,27 +1,37 @@
-import { Cart } from './../../cart/entities/cart.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
-import { Category } from '../../category/entities/category.entity';
-
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from 'typeorm';
+import { CartItem } from '../../cartitem/entities/cartitem.entity';
+import { Sale } from '../../sales/entities/sale.entity';
+import { Cart } from '../../cart/entities/cart.entity';
 
 @Entity()
 export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;
 
-  @Column()
+  @Column('text')
   description: string;
 
-  @Column()
+  @Column('decimal')
   price: number;
 
-  @ManyToMany(() => Category, (category) => category.products)
-  @JoinTable()
-  categories: Category[]; 
+  @Column()
+  category: string;
 
-  @ManyToMany(() => Cart, (cart) => cart.products)
-  @JoinTable()
-  carts: Cart[]
+  @Column({ nullable: true })
+  imageUrl: string;
+
+  @Column({ default: 0 })
+  stock: number;
+
+  @OneToMany(() => CartItem, cartItem => cartItem.product)
+  cartItems: CartItem[];
+
+  @OneToMany(() => Sale, sale => sale.product)
+  sales: Sale[];
+
+  @ManyToMany(() => Cart, cart => cart.products)
+  carts: Cart[];
 }
