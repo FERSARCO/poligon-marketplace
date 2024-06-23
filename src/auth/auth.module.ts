@@ -17,15 +17,11 @@ import { User } from '../users/entities/user.entity';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.TOKEN_SECRET_KEY, // Reemplaza con tu clave secreta
-      signOptions: { expiresIn: '3600s' }, // Tiempo de expiración del token (opcional)
+      signOptions: { expiresIn: '28800s' }, // Tiempo de expiración del token (opcional)
     }),User
   ],
   controllers:[AuthController],
   providers: [AuthService, JwtStrategy, LocalStrategy,UsersService],
   exports: [AuthService, JwtModule],
 })
-export class AuthModule {
-  constructor(){
-    console.log(process.env.TOKEN_SECRET_KEY);
-  }
-}
+export class AuthModule {}
