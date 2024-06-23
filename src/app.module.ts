@@ -6,12 +6,13 @@ import { CartModule } from './cart/cart.module';
 import { UsersModule } from './users/users.module';
 import { CartitemModule } from './cartitem/cartitem.module';
 import { SalesModule } from './sales/sales.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, ProductsModule],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('PG_HOST'),
@@ -22,15 +23,15 @@ import { SalesModule } from './sales/sales.module';
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         ssl: false,
         autoLoadEntities: true,
-        // synchronize: true,
       }),
       inject: [ConfigService],
     }),
+    AuthModule,
     CartModule,
-    UsersModule,
-    ProductsModule,
     CartitemModule,
+    ProductsModule,
     SalesModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
