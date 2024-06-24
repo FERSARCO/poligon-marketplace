@@ -38,7 +38,308 @@
         },
         "deploymentBucketObject": {
           "name": "serverlessdeploymentbucket2"
-        }
+        },
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "MainLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/marketplace-api-dev-main"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "marketplace-api",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/marketplace-api-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/marketplace-api-dev*:*:*"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "marketplace-api",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "MainLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverlessdeploymentbucket2",
+                  "S3Key": "serverless/marketplace-api/dev/1719239985068-2024-06-24T14:39:45.068Z/marketplace-api.zip"
+                },
+                "Handler": "dist/src/lambda.handler",
+                "Runtime": "nodejs18.x",
+                "FunctionName": "marketplace-api-dev-main",
+                "MemorySize": 256,
+                "Timeout": 30,
+                "Environment": {
+                  "Variables": {
+                    "PG_HOST": "bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com",
+                    "PG_PORT": "5432",
+                    "PG_USER": "postgres",
+                    "PG_PASS": "YDrJjdMJ6FASy4tYNgn6",
+                    "PG_DATABASE": "poligondb",
+                    "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>",
+                    "TOKEN_SECRET_KEY": "<REDACTED>"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "MainLogGroup"
+              ]
+            },
+            "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "MainLambdaFunction"
+                },
+                "CodeSha256": "851LBbYsVD+H1EiXOSjdJwLArqiBVMWIiK93vyPrFg8="
+              }
+            },
+            "ApiGatewayRestApi": {
+              "Type": "AWS::ApiGateway::RestApi",
+              "Properties": {
+                "Name": "dev-marketplace-api",
+                "EndpointConfiguration": {
+                  "Types": [
+                    "EDGE"
+                  ]
+                },
+                "Policy": "",
+                "MinimumCompressionSize": 1024
+              }
+            },
+            "ApiGatewayResourceAnyVar": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Fn::GetAtt": [
+                    "ApiGatewayRestApi",
+                    "RootResourceId"
+                  ]
+                },
+                "PathPart": "{any+}",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodAnyVarAny": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "ANY",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceAnyVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "MainLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "MainLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayDeployment1719239906664": {
+              "Type": "AWS::ApiGateway::Deployment",
+              "Properties": {
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "StageName": "dev"
+              },
+              "DependsOn": [
+                "ApiGatewayMethodAnyVarAny"
+              ]
+            },
+            "MainLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "MainLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverlessdeploymentbucket2",
+              "Export": {
+                "Name": "sls-marketplace-api-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "MainLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc"
+              },
+              "Export": {
+                "Name": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
+              }
+            },
+            "ServiceEndpoint": {
+              "Description": "URL of the service endpoint",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    },
+                    "/dev"
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-marketplace-api-dev-ServiceEndpoint"
+              }
+            }
+          }
+        },
+        "vpc": {}
       },
       "functions": {
         "main": {
@@ -49,17 +350,23 @@
             {
               "http": {
                 "method": "any",
-                "path": "/{any+}"
+                "path": "{any+}",
+                "integration": "AWS_PROXY"
               }
             }
           ],
-          "name": "marketplace-api-dev-main"
+          "name": "marketplace-api-dev-main",
+          "package": {},
+          "memory": 256,
+          "runtime": "nodejs18.x",
+          "vpc": {},
+          "versionLogicalId": "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc"
         }
       }
     },
     "serviceRawFile": "service: marketplace-api\r\n\r\nplugins:\r\n - serverless-plugin-optimize\r\n - serverless-offline\r\n - serverless-dotenv-plugin\r\n - serverless-jetpack\r\n\r\nprovider:\r\n name: aws\r\n runtime: nodejs18.x\r\n region: us-east-1 # Región de AWS (cambia a la que necesites)\r\n stage: dev # Entorno de despliegue (dev, prod, etc.)\r\n apiGateway:\r\n    minimumCompressionSize: 1024 # Tamaño mínimo para compresión\r\n deploymentBucket:\r\n    name: serverlessdeploymentbucket2\r\n\r\nfunctions:\r\n main: # The name of the lambda function\r\n   # The module 'handler' is exported in the file 'src/lambda'\r\n   handler: dist/src/lambda.handler\r\n   memorySize: 256 # Memoria asignada (ajusta según tus necesidades)\r\n   timeout: 30 # Tiempo de espera máximo\r\n   events:\r\n     - http:\r\n         method: any\r\n         path: /{any+}\r\n\r\n    ",
     "command": [
-      "remove"
+      "deploy"
     ],
     "options": {},
     "error": null,
@@ -86,20 +393,20 @@
     "serviceProviderAwsAccountId": "767398044749",
     "versionSf": "4.1.5",
     "serviceProviderAwsCfStackName": "marketplace-api-dev",
-    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/6edc7b00-31cb-11ef-955a-1267ae59006f",
-    "serviceProviderAwsCfStackCreated": "2024-06-24T01:45:28.167Z",
-    "serviceProviderAwsCfStackUpdated": "2024-06-24T01:45:34.950Z",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/a52a5620-3237-11ef-a5a4-0e8a174b2131",
+    "serviceProviderAwsCfStackCreated": "2024-06-24T14:40:04.944Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-24T14:40:11.452Z",
     "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "MainLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:7",
+        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:13",
         "Description": "Current Lambda function version",
         "ExportName": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://uci4qulkll.execute-api.us-east-1.amazonaws.com/dev",
+        "OutputValue": "https://ss80rcghab.execute-api.us-east-1.amazonaws.com/dev",
         "Description": "URL of the service endpoint",
         "ExportName": "sls-marketplace-api-dev-ServiceEndpoint"
       },

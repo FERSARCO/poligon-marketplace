@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe,UseGuar
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'; 
 import { Response } from 'express';
 import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserDto } from './dto/user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('users')
@@ -45,14 +45,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @ApiOperation({ summary: 'Update a user by ID' })
-  @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
-  @ApiResponse({ status: 200, description: 'The updated user.', type: UpdateUserDto })
-  @ApiResponse({ status: 404, description: 'User not found.' })
-  @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
-  }
+
 
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'User ID' })

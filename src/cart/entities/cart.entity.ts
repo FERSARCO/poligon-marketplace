@@ -15,7 +15,7 @@ export class Cart {
   cartItems: CartItem[];
 
   @ManyToMany(() => Product, product => product.carts)
-  @JoinTable() //  Tabla intermedia para la relación ManyToMany
+  @JoinTable()
   products: Product[]; 
 }
 

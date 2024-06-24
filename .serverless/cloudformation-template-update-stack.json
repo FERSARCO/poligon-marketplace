@@ -91,7 +91,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverlessdeploymentbucket2",
-          "S3Key": "serverless/marketplace-api/dev/1719193507735-2024-06-24T01:45:07.735Z/marketplace-api.zip"
+          "S3Key": "serverless/marketplace-api/dev/1719239985068-2024-06-24T14:39:45.068Z/marketplace-api.zip"
         },
         "Handler": "dist/src/lambda.handler",
         "Runtime": "nodejs18.x",
@@ -120,14 +120,14 @@
         "MainLogGroup"
       ]
     },
-    "MainLambdaVersionmLVJ70HBG6KlzxUDjIS6J65IdXIw70RLSK5SCnSRkpc": {
+    "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MainLambdaFunction"
         },
-        "CodeSha256": "QcwZ1awITpJFF0k42y+8PU3H8hx9zMRsHQAmZxRGn9o="
+        "CodeSha256": "851LBbYsVD+H1EiXOSjdJwLArqiBVMWIiK93vyPrFg8="
       }
     },
     "ApiGatewayRestApi": {
@@ -204,7 +204,7 @@
         "MainLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1719193391853": {
+    "ApiGatewayDeployment1719239906664": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -264,7 +264,7 @@
     "MainLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MainLambdaVersionmLVJ70HBG6KlzxUDjIS6J65IdXIw70RLSK5SCnSRkpc"
+        "Ref": "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc"
       },
       "Export": {
         "Name": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"

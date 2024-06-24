@@ -3,7 +3,7 @@ import * as argon2 from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import { Cart } from '../cart/entities/cart.entity';
 
@@ -52,14 +52,6 @@ export class UsersService {
     return user;
   }
 
-  @ApiOperation({ summary: 'Update a user by ID' })
-  @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOne(id);
-    // Update the propertys of user with dto data
-    Object.assign(user, updateUserDto); 
-    return await this.userRepository.save(user);
-  }
 
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'User ID' })

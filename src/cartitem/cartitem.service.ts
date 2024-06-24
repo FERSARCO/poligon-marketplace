@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCartItemDto,UpdateCartItemDto } from './dto/cartitem.dto';
+import { CreateCartItemDto } from './dto/cartitem.dto';
 
 
 @Injectable()
@@ -14,10 +14,6 @@ export class CartitemService {
 
   findOne(id: number) {
     return `This action returns a #${id} cartitem`;
-  }
-
-  update(id: number, updateCartitemDto: UpdateCartItemDto) {
-    return `This action updates a #${id} cartitem`;
   }
 
   remove(id: number) {

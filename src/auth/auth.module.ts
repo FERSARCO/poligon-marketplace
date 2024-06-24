@@ -17,8 +17,8 @@ import { Cart } from 'src/cart/entities/cart.entity';
     UsersModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.TOKEN_SECRET_KEY, // Reemplaza con tu clave secreta
-      signOptions: { expiresIn: '28800s' }, // Tiempo de expiración del token (opcional)
+      secret: process.env.TOKEN_SECRET_KEY,
+      signOptions: { expiresIn: '28800s' },
     }),User
   ],
   controllers:[AuthController],

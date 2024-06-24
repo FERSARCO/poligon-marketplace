@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { CreateProductDto,UpdateProductDto } from './dto/product.dto';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { CreateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 
 
 @Injectable()
-@ApiTags('products')
 export class ProductsService {
   constructor(@InjectRepository(Product) private readonly productRepository: Repository<Product>) {}
 
@@ -36,11 +35,5 @@ export class ProductsService {
     return await this.productRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
-  }
 }

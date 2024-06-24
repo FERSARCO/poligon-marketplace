@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 export class JwtAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
+  //Validate token
   canActivate(context: ExecutionContext,): boolean | Promise<boolean> | Observable<boolean> {
     const isPublic = this.reflector.get('isPublic', context.getHandler());
   
