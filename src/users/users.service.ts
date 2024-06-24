@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
@@ -13,8 +13,7 @@ export class UsersService {
 
   @ApiOperation({ summary: 'Create a new user' })
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const saltRounds = 10;
-    createUserDto.password = await bcrypt.hash(createUserDto.password, saltRounds);
+    createUserDto.password = await argon2.hash(createUserDto.password);
     const newUser = this.userRepository.create(createUserDto);
     if(!newUser){
       throw new NotFoundException(`Error`);

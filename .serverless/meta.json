@@ -33,7 +33,8 @@
           "PG_USER": "postgres",
           "PG_PASS": "YDrJjdMJ6FASy4tYNgn6",
           "PG_DATABASE": "poligondb",
-          "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>"
+          "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>",
+          "TOKEN_SECRET_KEY": "<REDACTED>"
         },
         "deploymentBucketObject": {
           "name": "serverlessdeploymentbucket2"
@@ -85,20 +86,20 @@
     "serviceProviderAwsAccountId": "767398044749",
     "versionSf": "4.1.5",
     "serviceProviderAwsCfStackName": "marketplace-api-dev",
-    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/e3334940-302f-11ef-a1ff-1265547e7689",
-    "serviceProviderAwsCfStackCreated": "2024-06-22T00:39:30.664Z",
-    "serviceProviderAwsCfStackUpdated": "2024-06-22T00:39:37.076Z",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/6edc7b00-31cb-11ef-955a-1267ae59006f",
+    "serviceProviderAwsCfStackCreated": "2024-06-24T01:45:28.167Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-24T01:45:34.950Z",
     "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "MainLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:2",
+        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:7",
         "Description": "Current Lambda function version",
         "ExportName": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://jx9dodoc8k.execute-api.us-east-1.amazonaws.com/dev",
+        "OutputValue": "https://uci4qulkll.execute-api.us-east-1.amazonaws.com/dev",
         "Description": "URL of the service endpoint",
         "ExportName": "sls-marketplace-api-dev-ServiceEndpoint"
       },

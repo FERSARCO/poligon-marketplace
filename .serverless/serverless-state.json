@@ -20,7 +20,8 @@
         "PG_USER": "postgres",
         "PG_PASS": "YDrJjdMJ6FASy4tYNgn6",
         "PG_DATABASE": "poligondb",
-        "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>"
+        "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>",
+        "TOKEN_SECRET_KEY": "your-secret-key"
       },
       "deploymentBucketObject": {
         "name": "serverlessdeploymentbucket2"
@@ -118,7 +119,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverlessdeploymentbucket2",
-                "S3Key": "serverless/marketplace-api/dev/1719016753565-2024-06-22T00:39:13.565Z/marketplace-api.zip"
+                "S3Key": "serverless/marketplace-api/dev/1719193507735-2024-06-24T01:45:07.735Z/marketplace-api.zip"
               },
               "Handler": "dist/src/lambda.handler",
               "Runtime": "nodejs18.x",
@@ -132,7 +133,8 @@
                   "PG_USER": "postgres",
                   "PG_PASS": "YDrJjdMJ6FASy4tYNgn6",
                   "PG_DATABASE": "poligondb",
-                  "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>"
+                  "DATABASE_URL": "postgres://<postgres>:<YDrJjdMJ6FASy4tYNgn6>@<bd-agrotraze.crgiqigggkmg.us-east-2.rds.amazonaws.com>:<5432>/<poligondb>",
+                  "TOKEN_SECRET_KEY": "your-secret-key"
                 }
               },
               "Role": {
@@ -146,14 +148,14 @@
               "MainLogGroup"
             ]
           },
-          "MainLambdaVersionM1BZ3bWU755pAqDNu1qEx9rabGJYxywbkNVVkARWQ": {
+          "MainLambdaVersionmLVJ70HBG6KlzxUDjIS6J65IdXIw70RLSK5SCnSRkpc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MainLambdaFunction"
               },
-              "CodeSha256": "gcHjMQ6xWlYfGOhP5GpycffFh8Vc48VJER5ZmjqNiEg="
+              "CodeSha256": "QcwZ1awITpJFF0k42y+8PU3H8hx9zMRsHQAmZxRGn9o="
             }
           },
           "ApiGatewayRestApi": {
@@ -230,7 +232,7 @@
               "MainLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1719016664017": {
+          "ApiGatewayDeployment1719193391853": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -290,7 +292,7 @@
           "MainLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MainLambdaVersionM1BZ3bWU755pAqDNu1qEx9rabGJYxywbkNVVkARWQ"
+              "Ref": "MainLambdaVersionmLVJ70HBG6KlzxUDjIS6J65IdXIw70RLSK5SCnSRkpc"
             },
             "Export": {
               "Name": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
@@ -352,7 +354,7 @@
         "memory": 256,
         "runtime": "nodejs18.x",
         "vpc": {},
-        "versionLogicalId": "MainLambdaVersionM1BZ3bWU755pAqDNu1qEx9rabGJYxywbkNVVkARWQ"
+        "versionLogicalId": "MainLambdaVersionmLVJ70HBG6KlzxUDjIS6J65IdXIw70RLSK5SCnSRkpc"
       }
     },
     "configValidationMode": "warn",
@@ -374,7 +376,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/marketplace-api/dev/1719016753565-2024-06-22T00:39:13.565Z",
+    "artifactDirectoryName": "serverless/marketplace-api/dev/1719193507735-2024-06-24T01:45:07.735Z",
     "artifact": "marketplace-api.zip"
   }
 }
