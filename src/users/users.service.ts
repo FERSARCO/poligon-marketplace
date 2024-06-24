@@ -1,15 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import * as argon2 from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as argon2 from 'argon2';
+import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
-import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { Cart } from '../cart/entities/cart.entity';
+
 
 @Injectable()
 @ApiTags('users')
 export class UsersService {
-  constructor(@InjectRepository(User)private readonly userRepository: Repository<User>) {}
+  constructor(@InjectRepository(User)private readonly userRepository: Repository<User>,@InjectRepository(Cart)private readonly cartRepository: Repository<Cart>) {}
 
   @ApiOperation({ summary: 'Create a new user' })
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -18,7 +20,10 @@ export class UsersService {
     if(!newUser){
       throw new NotFoundException(`Error`);
     }
-    return await this.userRepository.save(newUser);
+    const saveUser=await this.userRepository.save(newUser);
+    const cart = this.cartRepository.create({ user: saveUser });
+    await this.cartRepository.save(cart);
+    return saveUser
   }
 
   @ApiOperation({ summary: 'Get all users' })

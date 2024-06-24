@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config'; 
 import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CartModule } from './cart/cart.module';
@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { CartitemModule } from './cartitem/cartitem.module';
 import { SalesModule } from './sales/sales.module';
 import { AuthModule } from './auth/auth.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -34,6 +35,6 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [User],
 })
 export class AppModule {}
