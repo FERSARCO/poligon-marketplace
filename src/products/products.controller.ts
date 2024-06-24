@@ -15,12 +15,11 @@ export class ProductsController {
   @ApiOperation({ summary: 'Create a new product' })
   @ApiCreatedResponse({ description: 'Successfully created product' })
   @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
   @ApiBody({ type: CreateProductDto })
   @Post()
-  create(@Body() createProductDto: CreateProductDto,@Res() res: Response) {
+  async create(@Body() createProductDto: CreateProductDto,@Res() res: Response) {
     try{
-      const product= this.productsService.create(createProductDto);
+      const product= await this.productsService.create(createProductDto);
       return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'Successfully created product',data:product})
     }catch(error){
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});

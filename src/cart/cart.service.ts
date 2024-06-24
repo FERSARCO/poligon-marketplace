@@ -58,24 +58,37 @@ export class CartService {
   @ApiParam({ name: 'userId', type: 'number'})
   @ApiParam({ name: 'productId', type: 'number'})
   async removeFromCart(userId: number, productId: number): Promise<void> {
-  //Find cart
+  
+     //Find product
+     const product = await this.productRepository.findOne( {where:{id:productId}});
+
+     if(!product){
+       throw new NotFoundException(`Product #${productId} not found`);
+     }
+  
+    //Find cart
   const cart = await this.cartRepository.findOne({where: { user: { id: userId } },
     relations: ['cartItems', 'cartItems.product'],
   });
 
-    if (!cart) {return}
+    if (!cart) {
+      throw new NotFoundException(`cart of user: ${userId} not found`);
+    }
 
     // Find cartItemRemove
     const cartItemToRemove = cart.cartItems.find(
       (cartItem) => cartItem.product.id == productId,
     );
 
-    if (!cartItemToRemove) {return}
+    if (!cartItemToRemove) {
+      throw new NotFoundException(`There are no products in the cart to delete`);
+    }
     await this.cartItemRepository.delete(cartItemToRemove.id);
   }
 
   async getCartDetail(id:number): Promise<CartItem[]> {
   const cart = await this.cartRepository.findOne({where: {  id: id  },relations: ['cartItems', 'cartItems.product']});
+  if(!cart){return}
   this.cartItem= cart.cartItems
   return  this.cartItem
 }
