@@ -7,15 +7,18 @@ export class Sale {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column('int')
+  quantity: number;
+
+   @Column('decimal')
+  value: number;
+
+  @CreateDateColumn()
+  saleDate: Date;
+
   @ManyToOne(() => Product, product => product.sales)
   product: Product;
 
   @ManyToOne(() => User, user => user.sales)
   user: User;
-
-  @Column('int')
-  quantity: number;
-
-  @CreateDateColumn()
-  saleDate: Date;
 }

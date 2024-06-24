@@ -9,10 +9,7 @@ import { Product } from './entities/product.entity';
 @Injectable()
 @ApiTags('products')
 export class ProductsService {
-  constructor(
-    @InjectRepository(Product)
-    private readonly productRepository: Repository<Product>,
-  ) {}
+  constructor(@InjectRepository(Product) private readonly productRepository: Repository<Product>) {}
 
   @ApiOperation({ summary: 'Create a new product' })
   async create(createProductDto: CreateProductDto) {

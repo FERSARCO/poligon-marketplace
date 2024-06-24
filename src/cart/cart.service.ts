@@ -10,6 +10,7 @@ import { CreateCartItemDto } from '../cartitem/dto/cartitem.dto';
 
 @Injectable()
 export class CartService {
+  cartItem: CartItem[];
   constructor(@InjectRepository(Cart)private cartRepository: Repository<Cart>,@InjectRepository(CartItem)private cartItemRepository: Repository<CartItem>,@InjectRepository(Product)private productRepository: Repository<Product>,
   ) {}
 
@@ -83,4 +84,14 @@ export class CartService {
     await this.cartItemRepository.delete(cartItemToRemove.id);
   }
 
+  async getCartDetail(id:number): Promise<CartItem[]> {
+  console.log('ingreso a service', id);
+  const cart = await this.cartRepository.findOne({where: {  id: id  },
+    relations: ['cartItems', 'cartItems.product'], //  Carga las relaciones para que la consulta sea más eficiente
+  });
+  
+   this.cartItem= cart.cartItems
+  console.log(cart);
+  return  this.cartItem
+}
 }

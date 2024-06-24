@@ -15,7 +15,7 @@ export class CreateProductDto {
   @ApiProperty({description: 'Price of the product',example: 19.99})
   @IsNotEmpty()
   @IsNumber()
-  @Min(0) // Ensures price is not negative
+  @Min(0) 
   price: number;
 
   @IsNotEmpty()

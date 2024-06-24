@@ -3,6 +3,8 @@ import { ApiTags, ApiCreatedResponse, ApiBody, ApiOkResponse, ApiNotFoundRespons
 import { CartService } from './cart.service';
 import { CreateCartItemDto,UpdateCartItemDto } from '../cartitem/dto/cartitem.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CartItem } from 'src/cartitem/entities/cartitem.entity';
+import { Cart } from './entities/cart.entity';
 
 
 
@@ -33,11 +35,16 @@ export class CartController {
   }
 
 
-  // @Get()
-  // @ApiOkResponse({ description: 'Successfully retrieved cart items' })
-  // async getCartItems(@GetUser() user: User): Promise<CartItem[]> {
-  //   return this.cartService.getCartItems(user);
-  // }
+  @ApiOperation({ summary: 'Get a detail of cart' })
+  @ApiParam({ name: 'id', type: 'number', description: 'Detail' })
+  @ApiResponse({ status: 200, description: 'The found detail.' })
+  @ApiResponse({ status: 404, description: 'Detail not found.' })
+  @ApiOkResponse({ description: 'Successfully retrieved cart items' })
+  @Get(':id')
+  async getCartItems(@Param('id', ParseIntPipe) id: number): Promise<CartItem[]> {
+    console.log('ingreso a controller', id);
+    return this.cartService.getCartDetail(id);
+  }
 
   // @Patch(':id')
   // @ApiOkResponse({ description: 'Successfully updated cart item' })

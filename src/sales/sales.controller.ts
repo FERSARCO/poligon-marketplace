@@ -1,34 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { SalesService } from './sales.service';
-import { CreateSaleDto,UpdateSaleDto } from './dto/sale.dto';
+import { CreateSaleDto } from './dto/sale.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
 @Controller('sales')
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}
 
+
+  @ApiOperation({ summary: 'Create a new sale' })
+  @ApiResponse({ status: 201, description: 'The sale has been successfully created.', type: CreateSaleDto })
+  @ApiResponse({ status: 400, description: 'Invalid input data.' })
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createSaleDto: CreateSaleDto) {
-    return this.salesService.create(createSaleDto);
+  async create(@Body() createSaleDto: CreateSaleDto) {
+    console.log('c',createSaleDto);
+     await this.salesService.createSale(createSaleDto);
   }
 
-  @Get()
-  findAll() {
-    return this.salesService.findAll();
+  @Get(':month/category/:category')
+  findAll(@Param('month') month: number,@Param('category') category: string,) {
+    console.log('c', category);
+    return this.salesService.getSalebyCategoryAndMonth(month,category);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.salesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-    return this.salesService.update(+id, updateSaleDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.salesService.remove(+id);
-  }
 }

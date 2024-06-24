@@ -17,6 +17,12 @@ export class CreateSaleDto {
   @Min(1)
   @ApiProperty({description: 'Quantity of the product being sold',example: 2})
   quantity: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(0) 
+  @ApiProperty({description: 'Total value of the sale',example: 19.99})
+  value: number;
 }
 
 export class UpdateSaleDto extends PartialType(CreateSaleDto) {
@@ -30,4 +36,10 @@ export class UpdateSaleDto extends PartialType(CreateSaleDto) {
   @Min(1)
   @ApiProperty({description: 'Quantity of the product being sold (optional for updates)',example: 3})
   quantity?: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(0) 
+  @ApiProperty({description: 'Total value of the sale',example: 19.99})
+  value: number;
 }
