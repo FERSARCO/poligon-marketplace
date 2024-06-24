@@ -5,9 +5,6 @@ import { CartService } from './cart.service';
 import { CreateCartItemDto } from '../cartitem/dto/cartitem.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-
-
-
 @ApiTags('Cart')
 @ApiBearerAuth()
 @Controller('cart')
@@ -16,7 +13,9 @@ export class CartController {
 
   //Add Product To Card
   @ApiOperation({ summary: 'Add product to cart' })
-  @ApiCreatedResponse({ description: 'Successfully added product to cart' })
+  @ApiCreatedResponse({ description: 'The sale has been successfully created.' })
+  @ApiResponse({ status: 201, description: 'The sale has been successfully created.'})
+  @ApiResponse({ status: 400, description: 'Invalid input data.' })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @ApiBody({ type: CreateCartItemDto })

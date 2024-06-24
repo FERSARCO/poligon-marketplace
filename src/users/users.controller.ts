@@ -1,16 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe,UseGuards,Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body,UseGuards,Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'; 
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/user.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse } from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+  
+  //Create a new user
   @ApiOperation({ summary: 'Create a new user' })
+  @ApiCreatedResponse({ description: 'The user has been successfully created.' })
   @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: CreateUserDto })
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
   @UseGuards(JwtAuthGuard)
@@ -27,32 +29,5 @@ export class UsersController {
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
       }
    }
-  }
-
-  @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ status: 200, description: 'List of all users.', type: CreateUserDto, isArray: true })
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
-  }
-
-  @ApiOperation({ summary: 'Get a single user by ID' })
-  @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
-  @ApiResponse({ status: 200, description: 'The found user.', type: CreateUserDto })
-  @ApiResponse({ status: 404, description: 'User not found.' })
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
-  }
-
-
-
-  @ApiOperation({ summary: 'Delete a user by ID' })
-  @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
-  @ApiResponse({ status: 204, description: 'User deleted successfully.' })
-  @ApiResponse({ status: 404, description: 'User not found.' })
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(id);
   }
 }

@@ -10,25 +10,29 @@ import { Product } from './entities/product.entity';
 export class ProductsService {
   constructor(@InjectRepository(Product) private readonly productRepository: Repository<Product>) {}
 
+  //Create a new product
   @ApiOperation({ summary: 'Create a new product' })
+  @ApiParam({ name: 'createProductDto', type: CreateProductDto})
   async create(createProductDto: CreateProductDto) {
     const newProduct = this.productRepository.create(createProductDto);
     return await this.productRepository.save(newProduct);
   }
 
+  //Get all products
   @ApiOperation({ summary: 'Get all products' })
   async findAll() {
-    return await this.productRepository.find({
-      select: { name: true, imageUrl: true },
-    });
+    return await this.productRepository.find({select: { id:true,name: true, imageUrl: true }});
   }
 
+  //Get all products by name
   @ApiOperation({ summary: 'Get all products by name' })
   @ApiParam({ name: 'name', type: 'string', description: 'Product name' })
   async findAllByName(name: string): Promise<Product[]> {
     return await this.productRepository.find({where: { name: Like(`%${name}%`) },select: { name: true, imageUrl: true }, })
   }
 
+
+   //Get a single product by id
   @ApiOperation({ summary: 'Get a single product by id' })
   @ApiParam({ name: 'id', type: 'number', description: 'Product ID' })
   async findOneById(id: number): Promise<Product> {

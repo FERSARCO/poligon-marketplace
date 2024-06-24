@@ -13,7 +13,9 @@ import { Cart } from '../cart/entities/cart.entity';
 export class UsersService {
   constructor(@InjectRepository(User)private readonly userRepository: Repository<User>,@InjectRepository(Cart)private readonly cartRepository: Repository<Cart>) {}
 
+  //Create a new user
   @ApiOperation({ summary: 'Create a new user' })
+  @ApiParam({ name: 'createUserDto', type: CreateUserDto})
   async create(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.password = await argon2.hash(createUserDto.password);
     const newUser = this.userRepository.create(createUserDto);
@@ -26,11 +28,8 @@ export class UsersService {
     return saveUser
   }
 
-  @ApiOperation({ summary: 'Get all users' })
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
-
+ 
+  //Get a single user by ID
   @ApiOperation({ summary: 'Get a single user by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
   async findOne(id: number): Promise<User> {
@@ -41,7 +40,7 @@ export class UsersService {
     return user;
   }
 
-
+  //Get a single user by email
   @ApiOperation({ summary: 'Get a single user by email' })
   @ApiParam({ name: 'email', type: 'string', description: 'User email' })
   async findOneByEmail(email: string): Promise<User> {
@@ -50,15 +49,5 @@ export class UsersService {
       throw new NotFoundException(`User #${email} not found`);
     }
     return user;
-  }
-
-
-  @ApiOperation({ summary: 'Delete a user by ID' })
-  @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
-  async remove(id: number): Promise<void> {
-    const result = await this.userRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`User #${id} not found`);
-    }
   }
 }
