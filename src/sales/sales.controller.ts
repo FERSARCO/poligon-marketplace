@@ -2,10 +2,11 @@ import { Controller, Get, Post,Res, Body,HttpStatus, Param, UseGuards } from '@n
 import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/sale.dto';
 import { Response } from 'express';
-import { ApiOperation, ApiResponse,ApiBody, ApiCreatedResponse, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse,ApiBody, ApiCreatedResponse, ApiParam, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-
+@ApiTags('sales')
+@ApiBearerAuth()
 @Controller('sales')
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}
@@ -33,6 +34,7 @@ export class SalesController {
    @ApiParam({ name: 'category', required: true, description: 'Category of producto' })
    @ApiResponse({ status: 200, description: 'Sales' })
    @ApiResponse({ status: 400, description: 'Sales not found.' })
+   @UseGuards(JwtAuthGuard)
   @Get(':month/category/:category')
   async findSalesByMonthAndCategory(@Param('month') month: number,@Param('category') category: string,@Res() res: Response) {
   try{

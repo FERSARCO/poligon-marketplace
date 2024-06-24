@@ -29,14 +29,13 @@ export class CartController {
   }
 
  
-
-
  //Delete Product To Card
   @ApiOperation({ summary: 'Delete product to car' })
   @ApiParam({ name: 'userId', required: true, description: 'ID del usuario' })
   @ApiParam({ name: 'productId', required: true, description: 'ID del producto' })
   @ApiResponse({ status: 204, description: 'Products deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found.' })
+  @UseGuards(JwtAuthGuard)
   @Delete(':userId/product/:productId')
   async removeProductFromCart(@Param('userId') userId: number,@Param('productId') productId: number,@Res() res: Response) {
   try{
@@ -53,6 +52,7 @@ export class CartController {
   @ApiResponse({ status: 200, description: 'The found detail.' })
   @ApiResponse({ status: 400, description: 'Detail not found.' })
   @ApiOkResponse({ description: 'Successfully retrieved cart items' })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getCartItems(@Param('id', ParseIntPipe) id: number,@Res() res: Response) {
     try{

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt'
+
 import { CartService } from './cart.service';
 import { CartController } from './cart.controller';
 import { Cart } from 'src/cart/entities/cart.entity';

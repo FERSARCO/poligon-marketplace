@@ -11,7 +11,6 @@ async function bootstrap() {
   .setTitle('Mi API de Marketplace')
   .setDescription('Descripción de tu API')
   .setVersion('1.0')
-  .addTag('v1') 
   .addBearerAuth() 
   .build();
 

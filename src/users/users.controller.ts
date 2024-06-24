@@ -1,10 +1,12 @@
-import { Controller, Post, Body,Res, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body,Res, HttpStatus, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/user.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('users')
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -14,6 +16,7 @@ export class UsersController {
   @ApiCreatedResponse({ description: 'The user has been successfully created.' })
   @ApiResponse({ status: 201, description: 'The user has been successfully created.', type: CreateUserDto })
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
+  @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Post()
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
