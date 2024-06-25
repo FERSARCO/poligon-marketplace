@@ -13,7 +13,7 @@ export class CartController {
 
   //Add Product To Card
   @ApiOperation({ summary: 'Add product to cart' })
-  @ApiCreatedResponse({ description: 'The sale has been successfully created.' })
+  @ApiCreatedResponse({ description: 'The product has been add successfully created.' })
   @ApiResponse({ status: 201, description: 'The sale has been successfully created.'})
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
   @UseGuards(JwtAuthGuard)
@@ -22,7 +22,7 @@ export class CartController {
   async addProductToCart(@Body() createCartItemDto: CreateCartItemDto, @Res() res: Response) {
     try{
      const cart=  await this.cartService.addToCart(createCartItemDto);
-     return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'The sale has been successfully created',data:cart})
+     return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'The product has been add successfully created',data:cart})
      }catch(error){
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
    }

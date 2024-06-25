@@ -86,6 +86,9 @@ export class CartService {
     await this.cartItemRepository.delete(cartItemToRemove.id);
   }
 
+   //Get Detail of cart
+   @ApiOperation({ summary: 'Get Detail of cart' })
+   @ApiParam({ name: 'id', type: 'number'})
   async getCartDetail(id:number): Promise<CartItem[]> {
   const cart = await this.cartRepository.findOne({where: {  id: id  },relations: ['cartItems', 'cartItems.product']});
   if(!cart){return}
