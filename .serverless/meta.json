@@ -1,7 +1,7 @@
 {
   "C:\\Users\\Dell\\Desktop\\POLIGON\\poligon-marketplace": {
     "versionSfCore": null,
-    "versionFramework": "4.1.5",
+    "versionFramework": "4.1.6",
     "isWithinCompose": false,
     "isCompose": false,
     "composeOrgName": null,
@@ -132,7 +132,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverlessdeploymentbucket2",
-                  "S3Key": "serverless/marketplace-api/dev/1719239985068-2024-06-24T14:39:45.068Z/marketplace-api.zip"
+                  "S3Key": "serverless/marketplace-api/dev/1719295297570-2024-06-25T06:01:37.570Z/marketplace-api.zip"
                 },
                 "Handler": "dist/src/lambda.handler",
                 "Runtime": "nodejs18.x",
@@ -161,14 +161,14 @@
                 "MainLogGroup"
               ]
             },
-            "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc": {
+            "MainLambdaVersionMrBXSMoYZsAcspzVqw8By6ZOspnisEaXbe2ii31CXM": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "MainLambdaFunction"
                 },
-                "CodeSha256": "851LBbYsVD+H1EiXOSjdJwLArqiBVMWIiK93vyPrFg8="
+                "CodeSha256": "LF7egFkzgQIoshPgK+3rzPdrHoeIKHljSLPWR/pd6wc="
               }
             },
             "ApiGatewayRestApi": {
@@ -245,7 +245,7 @@
                 "MainLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1719239906664": {
+            "ApiGatewayDeployment1719295215207": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -305,7 +305,7 @@
             "MainLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc"
+                "Ref": "MainLambdaVersionMrBXSMoYZsAcspzVqw8By6ZOspnisEaXbe2ii31CXM"
               },
               "Export": {
                 "Name": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
@@ -360,7 +360,7 @@
           "memory": 256,
           "runtime": "nodejs18.x",
           "vpc": {},
-          "versionLogicalId": "MainLambdaVersioncUNiPDvHcujSYlWN5mC60bCKwQR1KF275mDIWgo1Uc"
+          "versionLogicalId": "MainLambdaVersionMrBXSMoYZsAcspzVqw8By6ZOspnisEaXbe2ii31CXM"
         }
       }
     },
@@ -371,7 +371,7 @@
     "options": {},
     "error": null,
     "params": {},
-    "machineId": "0c7e092b786153cda0ce6eb654dbe53c",
+    "machineId": "b41505733bdbd9a68becc64e3b7607f1",
     "accessKeyV2": "<REDACTED>",
     "accessKeyV1": "<REDACTED>",
     "orgId": "df399ded-2ae2-4b71-a9fe-0db73e3c2b4f",
@@ -391,22 +391,22 @@
     "userEmail": "lfgutierrez2017@gmail.com",
     "serviceProviderAwsCredentials": "<REDACTED>",
     "serviceProviderAwsAccountId": "767398044749",
-    "versionSf": "4.1.5",
+    "versionSf": "4.1.6",
     "serviceProviderAwsCfStackName": "marketplace-api-dev",
-    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/a52a5620-3237-11ef-a5a4-0e8a174b2131",
-    "serviceProviderAwsCfStackCreated": "2024-06-24T14:40:04.944Z",
-    "serviceProviderAwsCfStackUpdated": "2024-06-24T14:40:11.452Z",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:767398044749:stack/marketplace-api-dev/6c318290-32b8-11ef-b6b5-0afff6f85dc5",
+    "serviceProviderAwsCfStackCreated": "2024-06-25T06:01:54.415Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-25T06:02:01.004Z",
     "serviceProviderAwsCfStackStatus": "CREATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "MainLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:13",
+        "OutputValue": "arn:aws:lambda:us-east-1:767398044749:function:marketplace-api-dev-main:28",
         "Description": "Current Lambda function version",
         "ExportName": "sls-marketplace-api-dev-MainLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://ss80rcghab.execute-api.us-east-1.amazonaws.com/dev",
+        "OutputValue": "https://robjjfo259.execute-api.us-east-1.amazonaws.com/dev",
         "Description": "URL of the service endpoint",
         "ExportName": "sls-marketplace-api-dev-ServiceEndpoint"
       },
