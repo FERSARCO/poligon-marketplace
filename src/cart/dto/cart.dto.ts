@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsNumber, ValidateNested } from 'class-validator';
 import { CartItem } from '../../cartitem/entities/cartitem.entity';
 import { Type } from 'class-transformer'; 
-import { CreateCartItemDto } from 'src/cartitem/dto/cartitem.dto';
+import { CreateCartItemDto } from './../../cartitem/dto/cartitem.dto';
 
 export class CreateCartDto {
   @IsNotEmpty()

@@ -12,6 +12,10 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+
+  
+
+
   //Create a new product
   @ApiOperation({ summary: 'Create a new product' })
   @ApiCreatedResponse({ description: 'Successfully created product' })
@@ -26,6 +30,9 @@ export class ProductsController {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
     }
   }
+  
+  
+  
   //Get all products
   @ApiOperation({ summary: 'Get all products' })
   @ApiResponse({ status: 200, description: 'List of all products.', type: CreateProductDto, isArray: true })
@@ -89,7 +96,7 @@ export class ProductsController {
      }
   }
    catch(error){
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
      }
   }
 }

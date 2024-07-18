@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { SalesService } from './sales.service';
 import { SalesController } from './sales.controller';
 import { Sale } from './entities/sale.entity';
-import { Product } from 'src/products/entities/product.entity';
+import { Product } from '../products/entities/product.entity';
 import { User } from '../users/entities/user.entity';
 
 @Module({

@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {Repository } from 'typeorm';
 import { CreateSaleDto } from './dto/sale.dto';
 import { Sale } from './entities/sale.entity';
-import { Product } from 'src/products/entities/product.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Product } from '../products/entities/product.entity';
+import { User } from '../users/entities/user.entity';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Injectable()
@@ -17,30 +17,31 @@ export class SalesService {
   @ApiParam({ name: 'createSaleDto', type: CreateSaleDto})
   async createSale(createSaleDto: CreateSaleDto):Promise<Sale>{
     const { productId, userId } = createSaleDto;
-    // Find Product
-    const product = await this.productRepository.findOne({where: { id: productId }});
 
+    // Find Product
+    const product = await this.productRepository.findOne({ where: { id: productId } });
+  
     if (!product) {
       throw new NotFoundException(`Product #${productId} not found`);
-    }
-
-    //Find User
+    }else{
+    // Buscar usuario solo si se encontró el producto
     const user = await this.userRepository.findOne({ where: { id: userId } });
-
+  
     if (!user) {
-      throw new NotFoundException(`Product #${productId} not found`);
+      throw new NotFoundException(`User #${userId} not found`);
     }
-
+  
     let newSale = new Sale();
     newSale.value = createSaleDto.value;
     newSale.quantity = createSaleDto.quantity;
     newSale.product = product;
-    newSale.user = user; 
-
-    this.saleRepository.create(newSale)
+    newSale.user = user;
+  
+    this.saleRepository.create(newSale);
     return await this.saleRepository.save(newSale);
   }
-
+    }
+  
   //Find sales by month anda category
   @ApiOperation({ summary: 'Find sales by month anda category' })
   @ApiParam({ name: 'month', type: 'number'})
@@ -54,4 +55,7 @@ export class SalesService {
   return sales;
 }
 
+
 }
+export { User };
+

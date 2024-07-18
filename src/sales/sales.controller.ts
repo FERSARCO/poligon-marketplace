@@ -3,7 +3,7 @@ import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/sale.dto';
 import { Response } from 'express';
 import { ApiOperation, ApiResponse,ApiBody, ApiCreatedResponse, ApiParam, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('sales')
 @ApiBearerAuth()
