@@ -11,6 +11,9 @@ import { Cart } from '../cart/entities/cart.entity';
 @Injectable()
 @ApiTags('users')
 export class UsersService {
+  static create(create: any) {
+    throw new Error('Method not implemented.');
+  }
   constructor(@InjectRepository(User)private readonly userRepository: Repository<User>,@InjectRepository(Cart)private readonly cartRepository: Repository<Cart>) {}
 
   //Create a new user

@@ -27,8 +27,7 @@ const mockUserRepository = {findOne: jest.fn().mockReturnValue({ id: 1 })};
     const module: TestingModule = await Test.createTestingModule({
       imports:[JwtModule],
       controllers: [SalesController],
-      providers: [
-        SalesService,
+      providers: [SalesService,
       { provide: getRepositoryToken(Sale), useValue: mockSaleRepository },
       { provide: getRepositoryToken(Product), useValue: mockProductRepository },
       { provide: getRepositoryToken(User), useValue: mockUserRepository },
