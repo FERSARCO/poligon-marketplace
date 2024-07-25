@@ -16,9 +16,9 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Cart, cart => cart.user)
+  @OneToMany(() => Cart, (cart) => cart.user)
   carts: Cart[];
 
-  @OneToMany(() => Sale, sale => sale.user)
+  @OneToMany(() => Sale, (sale) => sale.userId)
   sales: Sale[];
 }

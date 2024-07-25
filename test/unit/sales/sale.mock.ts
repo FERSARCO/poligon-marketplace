@@ -4,10 +4,10 @@ import { User } from '../../../src/users/entities/user.entity';
 
 // Mock de un objeto Sale
 export const mockSale: Sale = {
-  id: 123,
+  id: 1,
   quantity: 2,
-  value: 19.99,
-  saleDate: new Date(),
-  product: {id: 456} as Product,
-  user: {id: 789} as User,
+  value: 10,
+  saleDate: new Date('2024-07-25T00:08:00.233Z'),
+  productId: { id: 3 } as Product,
+  userId: { id: 4 } as User,
 };

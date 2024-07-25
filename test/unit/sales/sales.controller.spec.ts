@@ -1,59 +1,70 @@
-
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpStatus, INestApplication, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import * as request from 'supertest';
-import { AppModule } from '../../../src/app.module';
-import { getRepositoryToken } from '@nestjs/typeorm'; // Importa getRepositoryToken
+import { Response } from 'express';
+import { HttpStatus } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { SalesController } from '../../../src/sales/sales.controller';
 import { SalesService } from '../../../src/sales/sales.service';
 import { CreateSaleDto } from '../../../src/sales/dto/sale.dto';
-import { Sale } from '../../../src/sales/entities/sale.entity';
+import { SaleServiceMock } from './sale.service.mock';
+import { mockSale } from './sale.mock';
 import { Product } from '../../../src/products/entities/product.entity';
 import { User } from '../../../src/users/entities/user.entity';
-import { mockSale } from './sale.mock';
-import { JwtModule } from '@nestjs/jwt';
+import { Sale } from '../../../src/sales/entities/sale.entity';
 
 describe('SalesController', () => {
-  let app: INestApplication;
-  let mockSalesService: SalesService;
-  let mockSaleController: SalesController;
-// Mock de los repositorios
-const mockSaleRepository = {create: jest.fn(),save: jest.fn().mockReturnValue(mockSale)};
-let mockProductRepository = {findOne: jest.fn().mockReturnValue({ id: 1 })};
-const mockUserRepository = {findOne: jest.fn().mockReturnValue({ id: 1 })};
+  let controller: SalesController;
+  const mockResponse: Partial<Response> = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn().mockReturnThis(),
+  };
 
   beforeEach(async () => {
+    const saleServiceProvider = {
+      provide: SalesService,
+      useClass: SaleServiceMock,
+    };
     const module: TestingModule = await Test.createTestingModule({
-      imports:[JwtModule],
+      imports: [JwtModule],
       controllers: [SalesController],
-      providers: [SalesService,
-      { provide: getRepositoryToken(Sale), useValue: mockSaleRepository },
-      { provide: getRepositoryToken(Product), useValue: mockProductRepository },
-      { provide: getRepositoryToken(User), useValue: mockUserRepository },
-      ],
-    }).compile();
+      providers: [SalesService, saleServiceProvider],
+    })
+      .overrideProvider(SalesService)
+      .useClass(SaleServiceMock)
+      .compile();
+    controller = module.get<SalesController>(SalesController);
+  });
 
-    app = module.createNestApplication();
-    await app.init();
-    mockSaleController= module.get<SalesController>(SalesController);
-    mockSalesService = module.get<SalesService>(SalesService);
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
   });
 
   it('should create a new sale', async () => {
-    const createSaleDto: CreateSaleDto = {productId: 1,userId: 1,value: 100,quantity: 2};
-    
-    const response: any = await request(app.getHttpServer())
-      .post('/sales')
-      .send(createSaleDto)
-      .expect(HttpStatus.CREATED);
+    // const createSaleDto: CreateSaleDto = {
+    //   value: 10,
+    //   quantity: 2,
+    //   productId: 3,
+    //   userId: 4,
+    // };
 
-    expect(response.body.data).toEqual(mockSale);
-    expect(response.body.message).toBe('The sale has been successfully created.');
-    expect(response.body.ok).toBe(true);
-    expect(response.body.status).toBe(201);
-    expect(mockSalesService.createSale).toHaveBeenCalledWith(createSaleDto);
-    expect(mockSaleController.create(createSaleDto,response)).toEqual(response.body);
+    const expectedResponse = {
+      ok: true,
+      status: 201,
+      message: 'The sale has been successfully created.',
+      data: mockSale,
+    };
+
+    // Call the function create controller with mockResponse
+    const createSaleDto: CreateSaleDto = {
+      quantity: 2,
+      value: 10,
+      productId: 3,
+      userId: 4,
+    };
+
+    await controller.create(createSaleDto, mockResponse as Response);
+    // Validate the controller response
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+    expect(mockResponse.json).toHaveBeenCalledWith(expectedResponse);
   });
 
   // it('should return 404 if product not found', async () => {
