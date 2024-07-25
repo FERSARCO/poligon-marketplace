@@ -4,6 +4,7 @@ import { Like, Repository } from 'typeorm';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
+import { PaginationDto } from 'src/common';
 
 
 @Injectable()
@@ -20,8 +21,25 @@ export class ProductsService {
 
   //Get all products
   @ApiOperation({ summary: 'Get all products' })
-  async findAll() {
-    return await this.productRepository.find({select: { id:true,name: true, imageUrl: true }});
+  async findAll(paginationDto: PaginationDto) {
+    const { page, limit } = paginationDto;
+    const totalPages = await this.productRepository.count();
+    const lastPage = Math.ceil(totalPages / limit);
+    return {
+      data: await this.productRepository.find({
+        select: { id:true,name: true, imageUrl: true },
+        skip: (page - 1) * limit,
+        take: limit,
+
+      }),
+      meta: {
+        total: totalPages,
+        page: page,
+        lastPage: lastPage,
+      },
+    };
+
+    // return await this.productRepository.find({select: { id:true,name: true, imageUrl: true }});
   }
 
   //Get all products by name

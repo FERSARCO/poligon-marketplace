@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Param,UsePipes,HttpStatus, ValidationPipe, UseGuards, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param,UsePipes,HttpStatus, ValidationPipe, UseGuards, Res, Query } from '@nestjs/common';
 import { Response } from 'express';
 import { ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/product.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'; 
+import { PaginationDto } from 'src/common';
 
 
 @ApiTags('products')
@@ -11,10 +12,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
-
-
-  
-
 
   //Create a new product
   @ApiOperation({ summary: 'Create a new product' })
@@ -40,10 +37,10 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Get()
-  async findAll(@Res() res: Response) {
+  async findAll(@Query() paginationDto:PaginationDto, @Res() res: Response) {
     try{
-      const products= await this.productsService.findAll();
-      if(products.length>0){
+      const products= await this.productsService.findAll(paginationDto);
+      if(products.data.length>0){
         return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'List of all products', data:products});
       }else{
         return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'Products not found.', data:[]});

@@ -1,11 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { envs } from './config';
 
 
 async function bootstrap() {
+  const looger = new Logger('Main');
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+  );
+  await app.listen(envs.port);
 
 //Swagger documentation
   const config = new DocumentBuilder()
@@ -19,6 +26,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api-docs', app, document);
 
-  await app.listen(3000);
+  looger.log(`application running on: ${envs.port}`);
+
+
+
 }
 bootstrap();
