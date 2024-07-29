@@ -6,7 +6,7 @@ import { UsersController } from '../../../src/users/users.controller';
 import { mockUser } from './user.mock';
 import { UserServiceMock } from './user.service.mock';
 import { UsersService } from '../../../src/users/users.service';
-import { CreateUserDto } from '../../../src/users/dto/user.dto';
+import { CreateUserDto } from '../../../src/users/dto/createUser.dto';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -20,6 +20,7 @@ describe('UsersController', () => {
       provide: UsersService,
       useClass: UserServiceMock,
     };
+
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule],
       controllers: [UsersController],
@@ -36,6 +37,12 @@ describe('UsersController', () => {
   });
 
   it('should create a user', async () => {
+    const createUserDto: CreateUserDto = {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'SecurePassword123',
+    };
+
     const expectedResponse = {
       ok: true,
       status: 201,
@@ -43,7 +50,7 @@ describe('UsersController', () => {
       data: mockUser,
     };
     // Call the function create controller with mockResponse
-    await controller.create(mockUser, mockResponse as Response);
+    await controller.createUser(createUserDto, mockResponse as Response);
     // Validate the controller response
     expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.CREATED);
     expect(mockResponse.json).toHaveBeenCalledWith(expectedResponse);

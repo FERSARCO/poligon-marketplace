@@ -1,4 +1,4 @@
-import{CreateUserDto} from '../../../src/users/dto/user.dto'
+import{CreateUserDto} from '../../../src/users/dto/createUser.dto'
 import { User } from '../../../src/users/entities/user.entity';
 
 export class UserServiceMock {
@@ -7,7 +7,7 @@ export class UserServiceMock {
     }
     async create(createUserDto: CreateUserDto): Promise<User> {
         return Promise.resolve({
-            id: 1, // Add the "id" property
+            id: 1,
             carts: [],
             sales: [],
             ...createUserDto

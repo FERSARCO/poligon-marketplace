@@ -38,9 +38,7 @@ export class ProductsService {
         lastPage: lastPage,
       },
     };
-
-    // return await this.productRepository.find({select: { id:true,name: true, imageUrl: true }});
-  }
+ }
 
   //Get all products by name
   @ApiOperation({ summary: 'Get all products by name' })

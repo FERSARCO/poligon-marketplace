@@ -13,12 +13,12 @@ import { PaginationDto } from 'src/common';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  //Create a new product
-  @ApiOperation({ summary: 'Create a new product' })
-  @ApiCreatedResponse({ description: 'Successfully created product' })
-  @UseGuards(JwtAuthGuard)
-  @ApiBody({ type: CreateProductDto })
-  @Post()
+//Create a new product
+@ApiOperation({ summary: 'Create a new product' })
+@ApiCreatedResponse({ description: 'Successfully created product' })
+@UseGuards(JwtAuthGuard)
+@ApiBody({ type: CreateProductDto })
+@Post()
   async create(@Body() createProductDto: CreateProductDto,@Res() res: Response) {
     try{
       const product= await this.productsService.create(createProductDto);
@@ -28,15 +28,13 @@ export class ProductsController {
     }
   }
   
-  
-  
-  //Get all products
-  @ApiOperation({ summary: 'Get all products' })
-  @ApiResponse({ status: 200, description: 'List of all products.', type: CreateProductDto, isArray: true })
-  @ApiResponse({ status: 400, description: 'Products not found.' })
-  @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
-  @Get()
+//Get all products
+@ApiOperation({ summary: 'Get all products' })
+@ApiResponse({ status: 200, description: 'List of all products.', type: CreateProductDto, isArray: true })
+@ApiResponse({ status: 400, description: 'Products not found.' })
+@UseGuards(JwtAuthGuard)
+@UsePipes(ValidationPipe)
+@Get()
   async findAll(@Query() paginationDto:PaginationDto, @Res() res: Response) {
     try{
       const products= await this.productsService.findAll(paginationDto);
@@ -50,14 +48,14 @@ export class ProductsController {
     }
   }
 
-  //Get all products like name
-  @ApiOperation({ summary: 'Get all products like name' })
-  @ApiResponse({ status: 200, description: 'List of all products.', type: CreateProductDto, isArray: true })
-  @ApiResponse({ status: 400, description: 'Products not found like name' })
-  @ApiParam({ name: 'name', type: 'string', description: 'User name' })
-  @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
-  @Get('search/:name')
+//Get all products like name
+@ApiOperation({ summary: 'Get all products like name' })
+@ApiResponse({ status: 200, description: 'List of all products.', type: CreateProductDto, isArray: true })
+@ApiResponse({ status: 400, description: 'Products not found like name' })
+@ApiParam({ name: 'name', type: 'string', description: 'User name' })
+@UseGuards(JwtAuthGuard)
+@UsePipes(ValidationPipe)
+@Get('search/:name')
   async findAllProductsLikeName(@Param('name') name: string, @Res() res: Response) {
     try{
     const products = await this.productsService.findAllByName(name);
@@ -72,13 +70,13 @@ export class ProductsController {
   }
 
 //Get a single product by id
-  @ApiOperation({ summary: 'Get a single product by id' })
-  @ApiResponse({ status: 200, description: 'Product Detail', type: CreateProductDto, isArray: true })
-  @ApiResponse({ status: 400, description: 'Product not found' })
-  @ApiParam({ name: 'id', type: 'number', description: 'Product ID' })
-  @UseGuards(JwtAuthGuard)
-  @UsePipes(ValidationPipe)
-  @Get(':id')
+@ApiOperation({ summary: 'Get a single product by id' })
+@ApiResponse({ status: 200, description: 'Product Detail', type: CreateProductDto, isArray: true })
+@ApiResponse({ status: 400, description: 'Product not found' })
+@ApiParam({ name: 'id', type: 'number', description: 'Product ID' })
+@UseGuards(JwtAuthGuard)
+@UsePipes(ValidationPipe)
+@Get(':id')
   async findOne(@Param('id') id: number, @Res() res: Response) {
      
     if (isNaN(Number(id))) {

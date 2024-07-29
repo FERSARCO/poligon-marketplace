@@ -28,13 +28,13 @@ export class SalesController {
     }
   }
 
-   //Find Sale By Category and month
-   @ApiOperation({ summary: 'Find Sale By Category and month' })
-   @ApiParam({ name: 'month', required: true, description: 'month of year' })
-   @ApiParam({ name: 'category', required: true, description: 'Category of producto' })
-   @ApiResponse({ status: 200, description: 'Sales' })
-   @ApiResponse({ status: 400, description: 'Sales not found.' })
-   @UseGuards(JwtAuthGuard)
+  //Find Sale By Category and month
+  @ApiOperation({ summary: 'Find Sale By Category and month' })
+  @ApiParam({ name: 'month', required: true, description: 'month of year' })
+  @ApiParam({ name: 'category', required: true, description: 'Category of producto' })
+  @ApiResponse({ status: 200, description: 'Sales' })
+  @ApiResponse({ status: 400, description: 'Sales not found.' })
+  @UseGuards(JwtAuthGuard)
   @Get(':month/category/:category')
   async findSalesByMonthAndCategory(@Param('month') month: number,@Param('category') category: string,@Res() res: Response) {
   try{

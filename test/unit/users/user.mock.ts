@@ -5,7 +5,7 @@ export const mockUser: User = {
     id: 1, 
     name: 'John Doe',
     email: 'john.doe@example.com',
-    password: 'password',
+    password: 'SecurePassword123',
     carts: [],
     sales: [],
  
