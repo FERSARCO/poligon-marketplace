@@ -1,4 +1,4 @@
-import { Controller, Post, Body,Res, HttpStatus, UsePipes, ValidationPipe, UseGuards, Get, Query, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body,Res, HttpStatus, UsePipes, ValidationPipe, UseGuards, Get, Query, Param, Patch, Delete } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -58,7 +58,7 @@ export class UsersController {
   //Get a single user by id
   @ApiOperation({ summary: 'Get a single user by id' })
   @ApiResponse({ status: 200, description: 'User Detail',isArray: false})
-  @ApiResponse({ status: 400, description: 'User not found' })
+  @ApiResponse({ status: 400, description: 'User with id # ${id} not found' })
   @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
@@ -68,10 +68,9 @@ export class UsersController {
    if (isNaN(Number(id))) {
       return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'Invalid ID. The ID must be a number.', data:[]});
    }
-
    try{
     const user = await this.usersService.findOne(id);
-    return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Detail ', data:user});
+    return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Detail', data:user});
    }catch(error){
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false, status:error.status, message:error.message,data:[]});
    }
@@ -80,7 +79,7 @@ export class UsersController {
     //Get a single user by email
     @ApiOperation({ summary: 'Get a single user by email' })
     @ApiResponse({ status: 200, description: 'User Detail', isArray: false })
-    @ApiResponse({ status: 400, description: 'User not found' })
+    @ApiResponse({ status: 400, description: 'User with email ${email} not found' })
     @ApiParam({ name: 'email', type: 'string', description: 'User email' })
     @UseGuards(JwtAuthGuard)
     @UsePipes(ValidationPipe)
@@ -90,12 +89,12 @@ export class UsersController {
     try{
        const user = await this.usersService.findOneByEmail(email);
        if(user){
-        return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Detail ', data:user});
-       }else{
-        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'User not found', data:[]});
-       }
+         return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Detail', data:user});
+        }else{
+          return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: `User with email ${email} not found`, data:[]});
+        }
      }catch(error){
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,status:error.status, message:error.message,data:[]});
      }
     }
 
@@ -114,14 +113,14 @@ export class UsersController {
    }
 
    try{
-    const user = await this.usersService.update(id, updateUser);
-    if(user){
-      return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Update successfully', data:user});
-    }else{
-      return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'User not found', data:[]});
-    }
+      const user = await this.usersService.update(id, updateUser);
+      if(user){
+        return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Update successfully', data:user});
+        }else{
+        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: `User id # ${id} not found`, data:[]});
+        }
    }catch(error){
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,status:error.status, message:error.message,data:[]});
    }
   }
 
@@ -132,7 +131,7 @@ export class UsersController {
     @ApiParam({ name: 'id', type: 'number', description: 'User ID' })
     @UseGuards(JwtAuthGuard)
     @UsePipes(ValidationPipe)
-    @Patch(':id')
+    @Delete(':id')
     async deleteUserById(@Param('id') id: number,  @Res() res: Response) {
      
      if (isNaN(Number(id))) {
@@ -144,10 +143,10 @@ export class UsersController {
       if(user){
         return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User delete successfully', data:user});
       }else{
-        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'User not found', data:[]});
+        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: `User id # ${id} not found`, data:[]});
       }
      }catch(error){
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,status:error.status, message:error.message,data:[]});
      }
     }
 

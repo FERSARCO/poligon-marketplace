@@ -62,9 +62,9 @@ export class UsersService {
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new HttpException(`User with id # ${id} not found`, HttpStatus.NOT_FOUND);
-      //throw new NotFoundException(`User #${id} not found`);
+      throw new HttpException(`User with id # ${id} not found`, HttpStatus.NOT_FOUND)
     }
+    user.password = undefined;
     return user;
   }
 
@@ -74,8 +74,9 @@ export class UsersService {
     async findOneByEmail(email: string): Promise<User> {
       const user = await this.userRepository.findOne({ where: { email } });
       if (!user) {
-        throw new NotFoundException(`User #${email} not found`);
+        throw new HttpException(`User with email ${email} not found`, HttpStatus.NOT_FOUND)
       }
+      user.password = undefined;
       return user;
     }
 
@@ -87,9 +88,11 @@ export class UsersService {
       const { id: _, name,email, } = updateUserDto;
       const user = await this.userRepository.findOne({ where: { id } });
       if (!user) {
-        throw new NotFoundException(`User #${id} not found`);
+        throw new HttpException(`User with id # ${id} not found`, HttpStatus.NOT_FOUND)
       }
       await this.userRepository.update(id, { name,email });
+      user.name = name;
+      user.email = email;
       return user
     }
 
@@ -99,7 +102,7 @@ export class UsersService {
     async delete(id: number): Promise<User> {
       const user = await this.userRepository.findOne({ where: { id } });
       if (!user) {
-        throw new NotFoundException(`User #${id} not found`);
+        throw new HttpException(`User with id # ${id} not found`, HttpStatus.NOT_FOUND);
       }
       await this.userRepository.delete(id);
       return user
