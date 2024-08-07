@@ -70,14 +70,10 @@ export class UsersController {
    }
 
    try{
-    const product = await this.usersService.findOne(id);
-    if(product){
-      return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Detail ', data:product});
-    }else{
-      return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'User not found', data:[]});
-    }
+    const user = await this.usersService.findOne(id);
+    return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'User Detail ', data:user});
    }catch(error){
-    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
+    return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false, status:error.status, message:error.message,data:[]});
    }
   }
 

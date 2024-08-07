@@ -5,13 +5,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { envs } from './config';
 
 
+
 async function bootstrap() {
   const looger = new Logger('Main');
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+  app.setGlobalPrefix('api/v1');
   await app.listen(envs.port);
-
 //Swagger documentation
   const config = new DocumentBuilder()
   .setTitle('Mi API de Marketplace')

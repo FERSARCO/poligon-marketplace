@@ -17,6 +17,7 @@ export class AuthService {
     const user = await this.usersService.findOneByEmail(email);
     const validation = await this.comparePassword(pass, user.password);
     if (user && validation) {
+      user.password= undefined;
       return user;
     }
     return null;

@@ -9,6 +9,7 @@ import { SalesModule } from './sales/sales.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './users/entities/user.entity';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
