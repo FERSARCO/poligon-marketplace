@@ -1,20 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import { ApiOperation,ApiParam } from '@nestjs/swagger';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService,private jwtService: JwtService) {}
+  constructor(@InjectRepository(User)private readonly userRepository: Repository<User>,private usersService: UsersService,private jwtService: JwtService) {}
 
   @ApiOperation({ summary: 'Validate email and password user' })
   @ApiParam({ name: 'email', type: 'string'})
   @ApiParam({ name: 'pass', type: 'string'})
   async validateUser(email: string, pass: string): Promise<User | null> {
-    const user = await this.usersService.findOneByEmail(email);
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new HttpException(`User with email ${email} not found`, HttpStatus.NOT_FOUND)
+    }
     const validation = await this.comparePassword(pass, user.password);
     if (user && validation) {
       user.password= undefined;

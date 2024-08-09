@@ -8,6 +8,7 @@ import { CartitemModule } from './cartitem/cartitem.module';
 import { SalesModule } from './sales/sales.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './users/entities/user.entity';
+import { SwaggerConfig } from './swagger';
 
 
 @Module({
@@ -29,6 +30,6 @@ import { User } from './users/entities/user.entity';
       inject: [ConfigService],
     }),AuthModule,CartModule,CartitemModule,ProductsModule,SalesModule,UsersModule],
   controllers: [],
-  providers: [User],
+  providers: [User,SwaggerConfig],
 })
 export class AppModule {}

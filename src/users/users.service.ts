@@ -42,11 +42,10 @@ export class UsersService {
     const lastPage = Math.ceil(totalPages / limit);
     return {
       data: await this.userRepository.find({
-        select: { id:true,name: true, email: true },
         skip: (page - 1) * limit,
         take: limit,
-
-      }),
+        select: { id:true,name: true, email: true },
+  }),
       meta: {
         total: totalPages,
         page: page,
