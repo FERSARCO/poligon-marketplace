@@ -6,6 +6,7 @@ import { eventContext } from 'aws-serverless-express/middleware';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
+import { setupSwagger } from './common/swagger';
 
 const express = require('express');
 
@@ -22,6 +23,8 @@ async function bootstrapServer(): Promise<Server> {
     const expressApp = express();
     const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressApp))
     nestApp.use(eventContext());
+    // Swagger Configuration
+     setupSwagger(nestApp);
     await nestApp.init();
     cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
  }

@@ -10,7 +10,6 @@ provider:
  name: aws
  runtime: nodejs18.x
  region: us-east-1 # Región de AWS (cambia a la que necesites)
- stage: dev # Entorno de despliegue (dev, prod, etc.)
  apiGateway:
     minimumCompressionSize: 1024 # Tamaño mínimo para compresión
  deploymentBucket:
@@ -26,5 +25,8 @@ functions:
      - http:
          method: any
          path: /{any+}
-
-    
+     - http:
+         path: /api-docs # Ruta específica para Swagger UI
+         method: get
+         cors: true 
+         integration: aws_proxy

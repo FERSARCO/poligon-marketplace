@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { ApiOperation, ApiResponse,ApiBody, ApiCreatedResponse, ApiParam, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
-@ApiTags('sales')
+@ApiTags('Sales')
 @ApiBearerAuth()
 @Controller('sales')
 export class SalesController {

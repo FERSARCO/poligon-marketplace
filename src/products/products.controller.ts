@@ -7,7 +7,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaginationDto } from 'src/common';
 
 
-@ApiTags('products')
+@ApiTags('Products')
 @ApiBearerAuth()
 @Controller('products')
 export class ProductsController {

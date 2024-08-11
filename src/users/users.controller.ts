@@ -8,7 +8,7 @@ import { PaginationDto } from 'src/common';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
 
-@ApiTags('users')
+@ApiTags('Users')
 @ApiBearerAuth()
 @Controller('users')
 export class UsersController {
