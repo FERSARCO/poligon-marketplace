@@ -9,6 +9,7 @@ plugins:
 provider:
  name: aws
  runtime: nodejs18.x
+ stage: ""
  region: us-east-1 # Región de AWS (cambia a la que necesites)
  apiGateway:
     minimumCompressionSize: 1024 # Tamaño mínimo para compresión
@@ -29,4 +30,4 @@ functions:
          path: /api-docs # Ruta específica para Swagger UI
          method: get
          cors: true 
-         integration: aws_proxy
+         integration: aws_proxy    

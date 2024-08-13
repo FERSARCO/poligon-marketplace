@@ -23,8 +23,9 @@ async function bootstrapServer(): Promise<Server> {
     const expressApp = express();
     const nestApp = await NestFactory.create(AppModule, new ExpressAdapter(expressApp))
     nestApp.use(eventContext());
+    
     // Swagger Configuration
-     setupSwagger(nestApp);
+    setupSwagger(nestApp);
     await nestApp.init();
     cachedServer = createServer(expressApp, undefined, binaryMimeTypes);
  }

@@ -4,12 +4,13 @@ import { INestApplication } from '@nestjs/common';
 export const setupSwagger = (app: INestApplication): void => {
   const config = new DocumentBuilder()
     .setTitle('My Nest.js API')
-    .setDescription('API description')
+    .setDescription('API MARKETPLACE DEMO')
     .setVersion('1.0')
     .addTag('MARKETPLACE APIS')
-    .addBearerAuth() 
+    .addBearerAuth()
+    .addServer('/dev') 
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api-docs', app, document); // Define la ruta para Swagger UI
+  SwaggerModule.setup('/api-docs', app, document);
 };

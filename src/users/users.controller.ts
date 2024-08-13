@@ -2,7 +2,7 @@ import { Controller, Post, Body,Res, HttpStatus, UsePipes, ValidationPipe, UseGu
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse, ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PaginationDto } from 'src/common';
 import { UpdateUserDto } from './dto/updateUser.dto';
@@ -39,12 +39,22 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'List of all users.', isArray: true })
   @ApiResponse({ status: 400, description: 'Users not found.' })
+  @ApiQuery({
+    name: 'limit', // Si tu DTO es solo para la paginación
+    description: 'Limit',
+    schema: { type: 'number', example: 10 },
+  })
+  @ApiQuery({
+    name: 'page', // Si tu DTO es solo para la paginación
+    description: 'Page',
+    schema: { type: 'number', example: 1 },
+  })
   @UseGuards(JwtAuthGuard)
   @UsePipes(ValidationPipe)
   @Get()
-  async findAllUsers(@Query() paginationDto:PaginationDto, @Res() res: Response) {
+  async findAllUsers(@Query() query:PaginationDto, @Res() res: Response) {
       try{
-        const users= await this.usersService.findAll(paginationDto);
+        const users= await this.usersService.findAll(query);
         if(users.data.length>0){
           return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'List of all users', data:users});
         }else{
