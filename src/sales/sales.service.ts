@@ -52,12 +52,9 @@ export class SalesService {
   @ApiParam({ name: 'month', type: 'number' })
   @ApiParam({ name: 'category', type: 'number' })
   async getSalebyCategoryAndMonth(month: number, category: string) {
-    const sales = await this.saleRepository
-      .createQueryBuilder('sale')
-      .leftJoinAndSelect('sale.product', 'product')
-      .where("substring(to_char(sale.saleDate, 'MM'), 1, 2) = :month", {
-        month: month.toString().padStart(2, '0'),
-      })
+    const sales = await this.saleRepository.createQueryBuilder('sale')
+      .leftJoinAndSelect('sale.productId', 'product')
+      .where("substring(to_char(sale.saleDate, 'MM'), 1, 2) = :month", {month: month.toString().padStart(2, '0')})
       .andWhere('product.category = :category', { category })
       .getMany();
     return sales;

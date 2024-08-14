@@ -91,4 +91,63 @@ describe('SalesController', () => {
       });
     }
   });
+
+  it('should return sales for the given month and category', async () => {
+    const month = 1;
+    const category = 'Electronics';
+    const mockSales = [mockSale, mockSale];
+    jest.spyOn(SaleServiceMock.prototype, 'getSalebyCategoryAndMonth').mockResolvedValue(mockSales); // Simula la respuesta del servicio
+    await controller.findSalesByMonthAndCategory(month, category, mockResponse as Response);
+    expect(SaleServiceMock.prototype.getSalebyCategoryAndMonth).toHaveBeenCalledWith(month, category);
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.OK); 
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: true,
+      status: 200,
+      message: 'Sales',
+      data: mockSales,
+    });
+  });
+
+  it('should return 404 if no sales found for the given month', async () => {
+    const month = 1;
+    const category = 'Electronics';
+    jest.spyOn(SaleServiceMock.prototype, 'getSalebyCategoryAndMonth').mockResolvedValue([]); // Simula que no hay ventas
+
+    try{
+      await controller.findSalesByMonthAndCategory(month, category, mockResponse as Response);
+    }catch(error){
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      ok: false,
+      status: 404,
+      message: 'Sales not found.',
+      data: [],
+    });
+    }
+   });
+
+  it('should return 404 if no sales found for the given category', async () => {
+    const month = 1;
+    const category = 'Electronics';
+    jest.spyOn(SaleServiceMock.prototype, 'getSalebyCategoryAndMonth').mockResolvedValue([]); 
+
+    try{
+       await controller.findSalesByMonthAndCategory(month, category, mockResponse as Response);
+    }catch(error){
+       expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND); 
+       expect(mockResponse.json).toHaveBeenCalledWith({
+       ok: false,
+       status: 404,
+       message: 'Sales not found.',
+       data: [],
+   });
+  }
+  });
+
 });
+
+
+
+
+
+

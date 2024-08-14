@@ -44,11 +44,10 @@ export class SalesController {
   async findSalesByMonthAndCategory(@Param('month') month: number,@Param('category') category: string,@Res() res: Response) {
   try{
       const sales= await  this.salesService.getSalebyCategoryAndMonth(month,category);
-
      if(sales.length>0){
         return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'Sales', data:sales});
      }else{
-        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'Sales not found.', data:[]});
+        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:404, message: 'Sales not found.', data:[]});
      }
     }catch(error){
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
