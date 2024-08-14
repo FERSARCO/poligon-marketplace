@@ -27,13 +27,13 @@ export class SalesService {
     });
 
     if (!product) {
-      throw new NotFoundException(`Product #${productId} not found`);
+      throw new NotFoundException(`Product`);
     } else {
       // Buscar usuario solo si se encontró el producto
       const user = await this.userRepository.findOne({ where: { id: userId } });
 
       if (!user) {
-        throw new NotFoundException(`User #${userId} not found`);
+        throw new NotFoundException(`User`);
       }
 
       let newSale = new Sale();

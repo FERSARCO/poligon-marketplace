@@ -24,7 +24,12 @@ export class SalesController {
       const sale = await this.salesService.createSale(createSaleDto);
       return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'The sale has been successfully created.',data:sale})
     }catch(error){
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
+      let item= error.message
+      if(error.status==404 && item.includes('Product') || item.includes('User') ) {
+         return res.status(HttpStatus.NOT_FOUND).json({ok:false,status:404, message:`${item} not found`,data:[]});
+        }else{
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,status:500, message:item,data:[]});
+        }
     }
   }
 
