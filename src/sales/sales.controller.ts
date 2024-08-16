@@ -7,6 +7,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Sales')
 @ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('sales')
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}
@@ -16,7 +17,6 @@ export class SalesController {
   @ApiCreatedResponse({ description: 'The sale has been successfully created.' })
   @ApiResponse({ status: 201, description: 'The sale has been successfully created.'})
   @ApiResponse({ status: 400, description: 'Invalid input data.' })
-  @UseGuards(JwtAuthGuard)
   @ApiBody({ type: CreateSaleDto })
   @Post()
   async create(@Body() createSaleDto: CreateSaleDto, @Res() res: Response) {
@@ -39,13 +39,12 @@ export class SalesController {
   @ApiParam({ name: 'category', required: true, description: 'Category of producto' })
   @ApiResponse({ status: 200, description: 'Sales' })
   @ApiResponse({ status: 400, description: 'Sales not found.' })
-  @UseGuards(JwtAuthGuard)
   @Get(':month/category/:category')
   async findSalesByMonthAndCategory(@Param('month') month: number,@Param('category') category: string,@Res() res: Response) {
   try{
       const sales= await  this.salesService.getSalebyCategoryAndMonth(month,category);
      if(sales.length>0){
-        return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'Sales', data:sales});
+        return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'Sales', data:sales});
      }else{
         return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:404, message: 'Sales not found.', data:[]});
      }

@@ -7,9 +7,6 @@ import { SalesService } from '../../../src/sales/sales.service';
 import { CreateSaleDto } from '../../../src/sales/dto/sale.dto';
 import { SaleServiceMock } from './sale.service.mock';
 import { mockSale } from './sale.mock';
-import { Product } from '../../../src/products/entities/product.entity';
-import { User } from '../../../src/users/entities/user.entity';
-import { Sale } from '../../../src/sales/entities/sale.entity';
 
 describe('SalesController', () => {
   let controller: SalesController;

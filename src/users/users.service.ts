@@ -6,7 +6,7 @@ import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/createUser.dto';
 import { User } from './entities/user.entity';
 import { Cart } from '../cart/entities/cart.entity';
-import { PaginationDto } from 'src/common';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
 
