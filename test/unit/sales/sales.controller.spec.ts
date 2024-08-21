@@ -13,13 +13,11 @@ describe('SalesController', () => {
   const mockResponse: Partial<Response> = {status: jest.fn().mockReturnThis(),json: jest.fn().mockReturnThis()};
 
   beforeEach(async () => {
-    const saleServiceProvider = {provide: SalesService,useClass: SaleServiceMock};
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule],
       controllers: [SalesController],
-      providers: [SalesService, saleServiceProvider],
-    })
-      .overrideProvider(SalesService)
+      providers: [SalesService],
+    }).overrideProvider(SalesService)
       .useClass(SaleServiceMock)
       .compile();
     controller = module.get<SalesController>(SalesController);

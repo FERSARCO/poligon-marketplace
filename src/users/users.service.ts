@@ -25,7 +25,7 @@ export class UsersService {
     createUserDto.password = await argon2.hash(createUserDto.password);
     const newUser = this.userRepository.create(createUserDto);
     if(!newUser){
-      throw new NotFoundException(`Error`);
+      throw new NotFoundException(`Email Exist`);
     }
     const saveUser=await this.userRepository.save(newUser);
     const cart = this.cartRepository.create({ user: saveUser });

@@ -44,7 +44,7 @@ export class SalesController {
   try{
       const sales= await  this.salesService.getSalebyCategoryAndMonth(month,category);
      if(sales.length>0){
-        return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'Sales', data:sales});
+        return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'Sales', data:sales});
      }else{
         return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:404, message: 'Sales not found.', data:[]});
      }

@@ -15,58 +15,37 @@ export class SalesService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  //Create a new sale
-  @ApiOperation({ summary: 'Create a new sale' })
-  @ApiParam({ name: 'createSaleDto', type: CreateSaleDto })
-  async createSale(createSaleDto: CreateSaleDto): Promise<Sale> {
-    const { productId, userId } = createSaleDto;
-
-    // Find Product
-    // const product = await this.productRepository.findOne({where: { id: productId }});
-    // const user = await this.userRepository.findOne({ where: { id: userId } });
-
-      let newSale = new Sale();
-      newSale.value = createSaleDto.value;
-      newSale.quantity = createSaleDto.quantity;
-      newSale.productId =  { id: 3 } as Product;
-      newSale.userId = { id: 4 } as User
-
-      this.saleRepository.create(newSale);
-      return await this.saleRepository.save(newSale);
-    
-  }
-
-    // //Create a new sale
-    // @ApiOperation({ summary: 'Create a new sale' })
-    // @ApiParam({ name: 'createSaleDto', type: CreateSaleDto })
-    // async createSale(createSaleDto: CreateSaleDto): Promise<Sale> {
-    //   const { productId, userId } = createSaleDto;
+    //Create a new sale
+    @ApiOperation({ summary: 'Create a new sale' })
+    @ApiParam({ name: 'createSaleDto', type: CreateSaleDto })
+    async createSale(createSaleDto: CreateSaleDto): Promise<Sale> {
+      const { productId, userId } = createSaleDto;
   
-    //   // Find Product
-    //   const product = await this.productRepository.findOne({
-    //     where: { id: productId },
-    //   });
+      // Find Product
+      const product = await this.productRepository.findOne({
+        where: { id: productId },
+      });
   
-    //   if (!product) {
-    //     throw new NotFoundException(`Product`);
-    //   } else {
-    //     // Buscar usuario solo si se encontró el producto
-    //     const user = await this.userRepository.findOne({ where: { id: userId } });
+      if (!product) {
+        throw new NotFoundException(`Product`);
+      } else {
+        // Buscar usuario solo si se encontró el producto
+        const user = await this.userRepository.findOne({ where: { id: userId } });
   
-    //     if (!user) {
-    //       throw new NotFoundException(`User`);
-    //     }
+        if (!user) {
+          throw new NotFoundException(`User`);
+        }
   
-    //     let newSale = new Sale();
-    //     newSale.value = createSaleDto.value;
-    //     newSale.quantity = createSaleDto.quantity;
-    //     newSale.productId = product;
-    //     newSale.userId = user;
+        let newSale = new Sale();
+        newSale.value = createSaleDto.value;
+        newSale.quantity = createSaleDto.quantity;
+        newSale.productId = product;
+        newSale.userId = user;
   
-    //     this.saleRepository.create(newSale);
-    //     return await this.saleRepository.save(newSale);
-    //   }
-    // }
+        this.saleRepository.create(newSale);
+        return await this.saleRepository.save(newSale);
+      }
+    }
 
   //Find sales by month anda category
   @ApiOperation({ summary: 'Find sales by month anda category' })

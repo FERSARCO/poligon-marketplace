@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { SalesController } from '../src/sales/sales.controller';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { SalesService } from '../src/sales/sales.service';
 import { SaleServiceMock } from './unit/sales/sale.service.mock';
@@ -38,6 +37,6 @@ describe('SolicitudController (e2e)', () => {
   it('/sales (GET)', async () => {
     return request(app.getHttpServer())
       .get('/sales/5/category/Home')
-      .expect(201);
+      .expect(200);
   });
 });

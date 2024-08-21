@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiCreatedResponse, ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { PaginationDto } from 'src/common';
+import { PaginationDto } from '../common/dto/pagination.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
 
 
@@ -26,12 +26,13 @@ export class UsersController {
     try{
        const user= await this.usersService.create(createUserDto);
        return res.status(HttpStatus.CREATED).json({ok:true,status:201, message: 'The user has been successfully created.',data:user});
-   }catch (error){
-      if(error.code==23505){
-        return res.status(HttpStatus.BAD_REQUEST).json({ok:false,statusCode:400, message: 'The email is already registere',data:[]});
-      }else{
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
-      }
+   }catch (error){      
+        let item= error.message
+        if(error.status==404 && item.includes('Email Exist')) {
+           return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message:`The email is already registere`,data:[]});
+          }else{
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,status:500, message:item,data:[]});
+          }
    }
   }
 
@@ -58,7 +59,7 @@ export class UsersController {
         if(users.data.length>0){
           return res.status(HttpStatus.OK).json({ok:true,status:200, message: 'List of all users', data:users});
         }else{
-          return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:400, message: 'Users not found.', data:[]});
+          return res.status(HttpStatus.BAD_REQUEST).json({ok:false,status:404, message: 'Users not found.', data:[]});
         }
       }catch(error){
         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ok:false,statusCode:500, message:error.message,data:[]});
